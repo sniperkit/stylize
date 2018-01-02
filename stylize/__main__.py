@@ -3,6 +3,7 @@ from stylize.util import print_aligned, file_ext
 from stylize.clang_formatter import ClangFormatter
 from stylize.yapf_formatter import YapfFormatter
 from stylize.golang_formatter import GolangFormatter
+from stylize.bazel_formatter import BazelFormatter
 from stylize import __version__
 
 from itertools import chain
@@ -101,7 +102,7 @@ def main():
     parser.add_argument(
         "--version", action='store_true', help="Print version and exit.")
 
-    formatters = [ClangFormatter(), YapfFormatter(), GolangFormatter()]
+    formatters = [ClangFormatter(), YapfFormatter(), GolangFormatter(), BazelFormatter()]
 
     # register any formatter-specific arguments
     formatters_by_ext = {}
