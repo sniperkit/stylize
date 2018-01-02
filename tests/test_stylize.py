@@ -13,6 +13,8 @@ BAD_PY = b"a = 1+1"
 GOOD_PY = b"a = 1 + 1\n"
 BAD_GO = b"package main\nfunc main(){}"
 GOOD_GO = b"package main\n\nfunc main() {}\n"
+BAD_BAZEL = b"py_binary(name='hello',srcs=['main.py'])"
+GOOD_BAZEL = b"py_binary(\n    name='hello',\n    srcs=['main.py'],\n)\n"
 EXAMPLE_CLANG_FORMAT = b"---\nBasedOnStyle: Google"
 
 
@@ -94,6 +96,21 @@ class TestFormatGo(Fixture):
         self.assertEqual(0, self.run_stylize(["--check"]))
         self.assertTrue(self.file_changed('bad.go', BAD_GO))
         self.assertFalse(self.file_changed('good.go', GOOD_GO))
+
+## Add one bad file and one good one, then ensure that only the bad one
+# is reformatted.
+class TestFormatBazel(Fixture):
+    def test_format_bazel(self):
+        self.write_file('bad.BUILD', BAD_GO)
+        self.write_file('good.BUILD', GOOD_GO)
+
+        self.assertNotEqual(0, self.run_stylize(["--check"]))
+
+        self.run_stylize()
+
+        self.assertEqual(0, self.run_stylize(["--check"]))
+        self.assertTrue(self.file_changed('bad.BUILD', BAD_BAZEL))
+        self.assertFalse(self.file_changed('good.BUILD', GOOD_BAZEL))
 
 
 ## Commit a bad cpp file to the master branch, then add another bad one.
