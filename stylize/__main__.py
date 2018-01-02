@@ -190,8 +190,9 @@ def main():
             status = "✗" if ARGS.check else "✔"
             print_aligned(filepath, status)
         else:
+            lang = ext[1:] if ext[0] == '.' else ext
             print_aligned(
-                "> %s: %s" % (ext[1:], filepath),
+                "> %s: %s" % (lang, filepath),
                 "[%d]" % file_scan_count,
                 end="\r")
 
