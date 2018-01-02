@@ -27,6 +27,7 @@ class GolangFormatter(Formatter):
 
             # return code zero indicates style-compliant file. 2 indicates non-
             # compliance.  Other return codes indicate errors.
+            # TODO: update this comment and check - these were leftover from copying the yapf file
             if proc.returncode != 0 and proc.returncode != 2:
                 raise RuntimeError("Call to gofmt failed for file '%s':\n%s" %
                                    (filepath, err.decode('utf-8')))
