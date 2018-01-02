@@ -2,6 +2,7 @@ from __future__ import print_function
 from stylize.util import print_aligned, file_ext
 from stylize.clang_formatter import ClangFormatter
 from stylize.yapf_formatter import YapfFormatter
+from stylize.golang_formatter import GolangFormatter
 from stylize import __version__
 
 from itertools import chain
@@ -71,7 +72,7 @@ def main():
 
     # Command line options
     parser = argparse.ArgumentParser(
-        description="Format and checkstyle C++ and Python code")
+        description="Format and checkstyle C++, Python, and Go code")
     parser.add_argument(
         "--check",
         action='store_true',
@@ -100,7 +101,7 @@ def main():
     parser.add_argument(
         "--version", action='store_true', help="Print version and exit.")
 
-    formatters = [ClangFormatter(), YapfFormatter()]
+    formatters = [ClangFormatter(), YapfFormatter(), GolangFormatter()]
 
     # register any formatter-specific arguments
     formatters_by_ext = {}
@@ -156,7 +157,7 @@ def main():
             files_to_format = set(
                 chain(changed_files, files_with_relevant_extensions))
     else:
-        print("%s all c++ and python files in the project..." % verb)
+        print("%s all code in the project..." % verb)
         files_to_format = enumerate_all_files(ARGS.exclude_dirs)
 
     # This variable holds the final patch

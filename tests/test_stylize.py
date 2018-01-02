@@ -11,6 +11,8 @@ BAD_CPP = b"int main() {\n\n\n\n}"
 GOOD_CPP = b"int main() {}"
 BAD_PY = b"a = 1+1"
 GOOD_PY = b"a = 1 + 1\n"
+BAD_GO = b"package main\nfunc main(){}"
+GOOD_GO = b"package main\n\nfunc main() {}\n"
 EXAMPLE_CLANG_FORMAT = b"---\nBasedOnStyle: Google"
 
 
@@ -77,6 +79,21 @@ class TestFormatPy(Fixture):
         self.assertEqual(0, self.run_stylize(["--check"]))
         self.assertTrue(self.file_changed('bad.py', BAD_PY))
         self.assertFalse(self.file_changed('good.py', GOOD_PY))
+
+## Add one bad py file and one good one, then ensure that only the bad one
+# is reformatted.
+class TestFormatGo(Fixture):
+    def test_format_go(self):
+        self.write_file('bad.go', BAD_GO)
+        self.write_file('good.go', GOOD_GO)
+
+        self.assertNotEqual(0, self.run_stylize(["--check"]))
+
+        self.run_stylize()
+
+        self.assertEqual(0, self.run_stylize(["--check"]))
+        self.assertTrue(self.file_changed('bad.go', BAD_GO))
+        self.assertFalse(self.file_changed('good.go', GOOD_GO))
 
 
 ## Commit a bad cpp file to the master branch, then add another bad one.
