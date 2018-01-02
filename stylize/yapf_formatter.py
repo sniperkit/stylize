@@ -15,6 +15,7 @@ class YapfFormatter(Formatter):
         self._tempdir = tempfile.mkdtemp()
 
     def add_args(self, argparser):
+        # TODO: reconcile this arg with the static config file name set in the constructor
         argparser.add_argument(
             "--yapf_style",
             type=str,
