@@ -21,7 +21,12 @@ def bytes_md5(bytes):
 
 def file_ext(filepath):
     _, ext = os.path.splitext(filepath)
-    return ext
+    if ext != '':
+        return ext
+
+    # if the file doesn't have an extension, return the filename
+    return os.path.basename(filepath)
+
 
 
 def get_terminal_width():
