@@ -2,6 +2,7 @@
 formatters:
     .py: yapf
     .go: gofmt
+    .yml: yaml
 exclude_dirs:
   - testdata
 clang_style: google
